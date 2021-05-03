@@ -1,5 +1,6 @@
 package com.nowcoder.community.controller;
 
+import com.nowcoder.community.annotation.LoginRequired;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityUtil;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -43,11 +46,13 @@ public class UserController {
     @Autowired
     private HostHolder hostHolder;
 
+    @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
     public String getSettingPage(){
         return "/site/setting";
     }
 
+    @LoginRequired
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headerImage, Model model){
         // 判断传入的文件是否为空
@@ -104,7 +109,22 @@ public class UserController {
         } catch (IOException e) {
             logger.error("读取头像失败：" + e.getMessage());
         }
+    }
 
+    @RequestMapping(path = "/updatePwd", method = RequestMethod.POST)
+    public String updatePassword(Model model, @RequestParam("password") String password,
+                                 @RequestParam("newPassword1") String newPassword1,
+                                 @RequestParam("newPassword2") String newPassword2){
+        // 从session中获取用户登录信息
+        User user = hostHolder.getUser();
+        System.out.println("更新密码获取到的用户Id" + user.getId());
+        Map<String, Object> map = userService.updatePassword(user, password, newPassword1, newPassword2);
+        System.out.println("passwordMsg:" + map.get("passwordMsg"));
+        model.addAttribute("passwordMsg", map.get("passwordMsg"));
+        model.addAttribute("passwordMsg1", map.get("passwordMsg1"));
+        model.addAttribute("passwordMsg2", map.get("passwordMsg2"));
+        model.addAttribute("successMsg", map.get("successMsg"));
+        return "/site/setting";
     }
 
 }

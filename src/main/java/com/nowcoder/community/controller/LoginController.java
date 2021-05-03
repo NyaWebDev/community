@@ -113,7 +113,7 @@ public class LoginController implements CommunityConstant {
         }
 
         // 检查账号密码
-        System.out.println("记住我："+rememberme);
+        //System.out.println("记住我："+rememberme);
         int expiredSeconds = rememberme ? REMEMBER_EXPIRED_SECONDS : DEFAULT_EXPIRED_SECONDS;
         Map<String, Object> map = userService.login(username, password, expiredSeconds);
         if(map.containsKey("ticket")){
