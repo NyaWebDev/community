@@ -26,7 +26,7 @@ public class KaptchaConfig {
         properties.setProperty("kaptcha.textproducer.char.string", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         //字符随机数
         properties.setProperty("kaptcha.textproducer.char.length", "4");
-        //图片防机器破解干扰类
+        //图片防破解干扰类
         properties.setProperty("kaptcha.noise.impl", "com.google.code.kaptcha.impl.NoNoise");
 
         DefaultKaptcha kaptcha = new DefaultKaptcha();

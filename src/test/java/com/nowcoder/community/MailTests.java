@@ -21,6 +21,7 @@ public class MailTests {
     @Autowired
     private TemplateEngine templateEngine;
 
+
     @Test
     public void testTextMail(){
         mailClient.sendMail("1176702199@qq.com","Test","Hello");
@@ -36,5 +37,6 @@ public class MailTests {
 
         mailClient.sendMail("1176702199@qq.com","HTML",content);
     }
+
 
 }
