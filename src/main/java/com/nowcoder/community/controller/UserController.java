@@ -113,17 +113,28 @@ public class UserController {
 
     @RequestMapping(path = "/updatePwd", method = RequestMethod.POST)
     public String updatePassword(Model model, @RequestParam("password") String password,
-                                 @RequestParam("newPassword1") String newPassword1,
-                                 @RequestParam("newPassword2") String newPassword2){
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword){
         // 从session中获取用户登录信息
         User user = hostHolder.getUser();
         System.out.println("更新密码获取到的用户Id" + user.getId());
-        Map<String, Object> map = userService.updatePassword(user, password, newPassword1, newPassword2);
+        Map<String, Object> map = userService.updatePassword(user, password, newPassword, confirmPassword);
         System.out.println("passwordMsg:" + map.get("passwordMsg"));
         model.addAttribute("passwordMsg", map.get("passwordMsg"));
-        model.addAttribute("passwordMsg1", map.get("passwordMsg1"));
-        model.addAttribute("passwordMsg2", map.get("passwordMsg2"));
+        model.addAttribute("newPasswordMsg", map.get("newPasswordMsg"));
+        model.addAttribute("confirmPassword", map.get("confirmPassword"));
+
+        // 进行数据回填判断
+        // 出了点问题 以后再调整（回填数据不显示
+       /* if(map.get("passwordMsg") != null && map.get("newPasswordMsg") != null && map.get("confirmPassword") != null){
+            System.out.println(map.get("passwordMsg"));
+            System.out.println(map.get("newpasswordMsg"));
+            model.addAttribute("password", password);
+            model.addAttribute("newPassword", newPassword);
+            model.addAttribute("confirmPassword", confirmPassword);
+        }*/
         model.addAttribute("successMsg", map.get("successMsg"));
+
         return "/site/setting";
     }
 

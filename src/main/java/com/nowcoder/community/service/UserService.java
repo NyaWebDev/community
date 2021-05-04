@@ -171,7 +171,7 @@ public class UserService implements CommunityConstant {
         return userMapper.updateHeader(userId, headerUrl);
     }
 
-    public Map<String, Object> updatePassword(User user, String password, String newPassword1, String newPassword2){
+    public Map<String, Object> updatePassword(User user, String password, String newPassword, String confirmPassword){
         Map<String, Object> map = new HashMap<>();
 
         // 判断空值
@@ -179,18 +179,18 @@ public class UserService implements CommunityConstant {
             map.put("passwordMsg", "密码不能为空！");
             return map;
         }
-        if(StringUtils.isBlank(newPassword1)){
-            map.put("passwordMsg1", "新密码不能为空！");
+        if(StringUtils.isBlank(newPassword)){
+            map.put("newPasswordMsg", "新密码不能为空！");
             return map;
-        } else if(newPassword1.length() < 6){
-            map.put("passwordMsg1", "密码长度必须大于6位！");
+        } else if(newPassword.length() < 6){
+            map.put("newPasswordMsg", "密码长度必须大于6位！");
             return map;
         }
-        if(StringUtils.isBlank(newPassword2)){
-            map.put("passwordMsg2", "请再输入一次新密码！");
+        if(StringUtils.isBlank(confirmPassword)){
+            map.put("confirmPassword", "请再输入一次新密码！");
             return map;
-        } else if(newPassword2.length() < 6){
-            map.put("passwordMsg2", "密码长度必须大于6位！");
+        } else if(confirmPassword.length() < 6){
+            map.put("confirmPassword", "密码长度必须大于6位！");
             return map;
         }
 
@@ -199,11 +199,11 @@ public class UserService implements CommunityConstant {
         if(!user.getPassword().equals(password)){
             map.put("passwordMsg", "原密码不正确！");
             return map;
-        } else if(!newPassword1.equals(newPassword2)){
-            map.put("passwordMsg2", "两次输入的密码不一致！");
+        } else if(!newPassword.equals(confirmPassword)){
+            map.put("confirmPassword", "两次输入的密码不一致！");
             return map;
         } else{
-            userMapper.updatePassword(user.getId(), CommunityUtil.md5(newPassword1 + user.getSalt()));
+            userMapper.updatePassword(user.getId(), CommunityUtil.md5(newPassword + user.getSalt()));
             map.put("successMsg", "密码修改成功！");
             return map;
         }
