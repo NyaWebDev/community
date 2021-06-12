@@ -170,7 +170,7 @@ public class UserController implements CommunityConstant {
         // 是否已关注
         boolean hasFollowed = false;
         if(hostHolder.getUser() != null){
-            hasFollowed = followService.hasFollowee(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
+            hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
         }
         model.addAttribute("hasFollowed", hasFollowed);
 
